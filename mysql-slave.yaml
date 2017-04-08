@@ -8,7 +8,7 @@ spec:
   volumes:
     - name: data
       hostPath:
-        path: /data/mysql_data
+        path: /data/mysql_slave_data
 
   containers:
     - name: slave-ncrxq
