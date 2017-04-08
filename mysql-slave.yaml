@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: slave-ncrxq
+  labels:
+    name: slave-ncrxq
+spec:
+  volumes:
+    - name: data
+      hostPath:
+        path: /data/mysql_data
+
+  containers:
+    - name: slave-ncrxq
+      image: mysql-slave:v1.0
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: uggTKd3xsIMM
+        - name: MYSQL_REPLICATION_USER
+          value: repl
+        - name: MYSQL_REPLICATION_PASSWORD
+          value: RQfUjBff
+        - name: MYSQL_MASTER_SERVICE_HOST
+          value: 127.0.0.1
+      ports:
+        - containerPort: 3306
+          name: slave-ncrxq
+      volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      resources:
+          limits:
+            cpu: 2
+            memory: 200Mi
+  nodeName: localhost
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: slave-ncrxq
+  labels:
+    name: slave-ncrxq
+spec:
+  type: NodePort
+  ports:
+    - port: 3306      
+      nodePort: 
+  selector:
+    name: slave-ncrxq
